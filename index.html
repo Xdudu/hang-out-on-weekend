@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Hang Out On Weekend~</title>
+    <link rel="stylesheet" href="css/style.css">
+  </head>
+  <body>
+    <div class="main-container">
+      <div class="week-of-year">
+        <svg width="960" height="54" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="280" cy="54" r="54" style="fill: #fdd4df;" />
+          <circle cx="680" cy="54" r="54" style="fill: #a08560;" />
+        </svg>
+        <!-- <svg width="960" height="100" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 252 78 C 246 86, 226 82, 226 56, 226 13, 334 0, 334 56,
+          334 70, 325 76, 319 71,
+          M 321 65 C 317 86, 297 92, 288 82 M 293 70, C 290 96, 253 96, 250 72"
+          style="stroke: #a08560; stroke-width: 3; fill: #fff" /> -->
+        <!-- </svg> -->
+        <div class="this-week">
+          <p><span id="this-year-num"></span>年的 &#10047;第 <span id="this-week-num"></span> 周&#10047;</p>
+        </div>
+      </div>
+      <div class="calender-container">
+        <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" style="position: absolute;">
+          <defs>
+            <g id="week-note-decoration">
+              <path d="M 0 0 L 70 70 M 0 70 L 70 0 M 35 0 L 35 70 M 0 35 L 70 35"
+              style="stroke: #e5e5e5; stroke-width: 1; stroke-dasharray: 6 2; fill: none" />
+              <path d="M 70 70 L 70 45 L 45 70 Z" fill="#a08560" />
+            </g>
+          </defs>
+        </svg>
+        <div class="day-in-week">
+          <div class="week-notation">Mon.</div>
+          <div class="week-note-container">
+            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" class="under-week-note">
+              <use x="0" y="0" xlink:href="#week-note-decoration">
+            </svg>
+            <div class="week-note">忙</div>
+            <div class="weekday-num date-in-week"></div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Tue.</div>
+          <div class="week-note-container">
+            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" class="under-week-note">
+              <use x="0" y="0" xlink:href="#week-note-decoration">
+            </svg>
+            <div class="week-note">了</div>
+            <div class="weekday-num date-in-week"></div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Wed.</div>
+          <div class="week-note-container">
+            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" class="under-week-note">
+              <use x="0" y="0" xlink:href="#week-note-decoration">
+            </svg>
+            <div class="week-note">一</div>
+            <div class="weekday-num date-in-week"></div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Thur.</div>
+          <div class="week-note-container">
+            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" class="under-week-note">
+              <use x="0" y="0" xlink:href="#week-note-decoration">
+            </svg>
+            <div class="week-note">周</div>
+            <div class="weekday-num date-in-week"></div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Fri.</div>
+          <div class="week-note-container">
+            <svg width="70" height="70" xmlns="http://www.w3.org/2000/svg" class="under-week-note">
+              <use x="0" y="0" xlink:href="#week-note-decoration">
+            </svg>
+            <div class="week-note">?</div>
+            <div class="weekday-num date-in-week"></div>
+          </div>
+        </div>
+        <div class="week-connect">
+          <div class="week-notation"></div>
+          <div class="week-note-container">
+            <div class="week-note">这个周末，</div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Sat.</div>
+          <div class="week-note-container">
+            <div class="week-note date-in-week" id="sat-num"></div>
+          </div>
+        </div>
+        <div class="day-in-week">
+          <div class="week-notation">Sun.</div>
+          <div class="week-note-container">
+            <div class="week-note date-in-week" id="sun-num"></div>
+          </div>
+        </div>
+        <div class="week-end">
+          <div class="week-notation"></div>
+          <div class="week-note-container">
+            <div class="week-note">一起出门走走吧~</div>
+          </div>
+        </div>
+      </div>
+      <div class="event-cate-container">
+        <div class="city-select-container">
+          <!-- <div class="city-container"> -->
+            <div id="city-selected-container">
+              <span>在</span>
+              <div id="city-selected">
+                <span>北京</span>
+                <svg width="12" height="9" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M 0 1.5 L 6 7.5 L 12 1.5" style="stroke: none; fill: #fff;" />
+                </svg>
+              </div>
+              <div id="all-cities-container">
+                <div class="all-cities">
+                  <div class="city-item" id="beijing">北京</div>
+                  <div class="city-item" id="shanghai">上海</div>
+                  <div class="city-item" id="guangzhou">广州</div>
+                  <div class="city-item" id="shenzhen">深圳</div>
+                  <div class="city-item" id="chengdu">成都</div>
+                  <div class="city-item" id="wuhan">武汉</div>
+                  <div class="city-item" id="hangzhou">杭州</div>
+                  <div class="city-item" id="chongqing">重庆</div>
+                  <div class="city-item" id="zhengzhou">郑州</div>
+                  <div class="city-item" id="nanjing">南京</div>
+                  <div class="city-item" id="xian">西安</div>
+                  <div class="city-item" id="suzhou">苏州</div>
+                  <div class="city-item" id="tianjin">天津</div>
+                  <div class="city-item" id="changsha">长沙</div>
+                  <div class="city-item" id="fuzhou">福州</div>
+                </div>
+              </div>
+            </div>
+          <!-- </div> -->
+          <p>看看本周末有哪些有趣的活动等你解锁~</p>
+          <div class="city-to-event">
+            <svg width="28" height="18" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 2 2 L 14 14 L 26 2"
+              style="stroke: #fdd4df; stroke-width: 5; fill: none; " />
+            </svg>
+          </div>
+        </div>
+        <div class="event-select-container">
+          <svg width="960" height="200" xmlns="http://www.w3.org/2000/svg" class="under-event-cate">
+            <path d="M 30 88 L 18 100 L 30 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-city"/>
+            <!-- <path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/> -->
+            <a href="event-list.html" target="_blank"><path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/></a>
+            <!-- <ellipse cx="480" cy="84" rx="32" ry="18" stroke="none" fill="#fdd4df" id="all-container"/> -->
+            <path d="M 480 102 L 480 132 A32,64 0 0,1 432,132 M 480 132 A32,64 0 0,0 528,132"
+             stroke="#a08560" stroke-width="6" fill="none"/>
+            <path d="M 233 50 L 317 80 M 213 100 L 303 115 M 217 155 L 303 145 M 727 50 L 643 80 M 747 100 L 657 115 M 743 155 L 657 145"
+             stroke="#a08560" fill="none"/>
+          </svg>
+          <div class="event-cate all-cate all" id="all">全部</div>
+          <div class="event-cate music" id="music">音乐</div>
+          <div class="event-cate drama" id="drama">戏剧</div>
+          <div class="event-cate salon" id="salon">讲座</div>
+          <div class="event-cate course" id="course">课程</div>
+          <div class="event-cate exhibition" id="exhibition">展览</div>
+          <div class="event-cate film" id="film">电影</div>
+          <div class="event-cate travel" id="travel">旅行</div>
+          <div class="event-cate party" id="party">聚会</div>
+          <div class="event-cate sports" id="sports">运动</div>
+          <div class="event-cate competition" id="competition">赛事</div>
+          <div class="event-cate kids" id="kids">亲子</div>
+          <div class="event-cate commonweal" id="commonweal">公益</div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/script.js"></script>
+  </body>
+</html>
