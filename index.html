@@ -150,8 +150,8 @@
         <div class="event-select-container">
           <svg width="960" height="200" xmlns="http://www.w3.org/2000/svg" class="under-event-cate">
             <path d="M 30 88 L 18 100 L 30 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-city"/>
-            <!-- <path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/> -->
-            <a href="event-list.html" target="_blank"><path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/></a>
+            <path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/>
+            <!-- <a href="event-list.html" target="_blank"><path d="M 930 88 L 942 100 L 930 112" stroke="#fdd4df" stroke-width="5" fill="none" class="event-to-list"/></a> -->
             <!-- <ellipse cx="480" cy="84" rx="32" ry="18" stroke="none" fill="#fdd4df" id="all-container"/> -->
             <path d="M 480 102 L 480 132 A32,64 0 0,1 432,132 M 480 132 A32,64 0 0,0 528,132"
              stroke="#a08560" stroke-width="6" fill="none"/>
@@ -171,10 +171,32 @@
           <div class="event-cate competition" id="competition">赛事</div>
           <div class="event-cate kids" id="kids">亲子</div>
           <div class="event-cate commonweal" id="commonweal">公益</div>
+          <div class="event-cate-filter">GO>></div>
+        </div>
+      </div>
+      <div class="events-container">
+        <div class="all-events"></div>
+        <div class="interesting-events">
+          <div id="map"></div>
+          <div class="interesting-events-items"></div>
         </div>
       </div>
     </div>
-
+    <template id="event-card-template">
+      <div class="event-card">
+        <img src="" alt="" class="event-img">
+        <h4 class="event-title"><a href="" target="_blank"></a></h4>
+        <p class="event-time"></p>
+        <p class="event-address"></p>
+        <p class="event-fee"></p>
+        <div class="add-to-map">
+          <svg width="27" height="27" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 0 30 L 30 30 L 30 0 Z" style="stroke: none; fill: #a08560;"/>
+          </svg>
+          <span>+</span>
+        </div>
+      </div>
+    </template>
     <script src="js/jquery.min.js"></script>
     <script src="js/script.js"></script>
   </body>

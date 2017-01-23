@@ -33,11 +33,14 @@ body {
 }
 
 
-
+/*******************/
 .calender-container {
   display: flex;
-  /*display: none;*/
   height: 130px;
+}
+
+.calender-container[class*="hide"] {
+  display: none;
 }
 
 .day-in-week {
@@ -100,6 +103,7 @@ body {
   /*display: none;*/
   height: 200px;
   position: relative;
+  margin-bottom: 12px;
   border: 1px solid #e1e0e0;
   border-top: none;
   border-bottom-left-radius: 50px;
@@ -112,6 +116,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.city-select-container[class*="hide"] {
+  display: none;
 }
 
 #city-selected-container {
@@ -137,6 +145,14 @@ body {
   width: 72px;
   overflow: hidden;
   text-align: center;
+}
+
+#city-selected:hover + #all-cities-container {
+  display: block;
+}
+
+#all-cities-container:hover {
+  display: block;
 }
 
 .all-cities {
@@ -166,12 +182,17 @@ body {
   cursor: pointer;
 }
 
-
+/**/
 .event-select-container {
   display: none;
 }
 
-.event-cate {
+.event-select-container[class*="show"] {
+  display: block;
+}
+
+.event-cate,
+.event-cate-filter {
   position: absolute;
   width: 42px;
   height: 24px;
@@ -186,12 +207,48 @@ body {
   cursor: pointer;
 }
 
+.event-cate-container[class*="tiles"] {
+  height: 66px;
+  border-radius: 0;
+}
+
+.event-cate-container[class*="tiles"] svg {
+  display: none;
+}
+
+.event-cate-container[class*="tiles"] .event-cate,
+.event-cate-container[class*="tiles"] .event-cate-filter {
+  position: relative;
+  display: inline-block;
+  top: 20px;
+  left: -120px;
+  font-size: 12px;
+}
+
 .all-cate {
   width: 64px;
   height: 36px;
   line-height: 36px;
   border-radius: 50%;
   background-color: #fdd4df;
+}
+
+.event-cate-filter {
+  display: none;
+  width: 54px;
+  border: 1px solid #a08560;
+  margin-left: 20px;
+}
+
+.event-cate-filter:hover {
+  cursor: pointer;
+}
+
+.event-cate-container[class*="tiles"] .all-cate{
+  width: 42px;
+  height: 24px;
+  line-height: 24px;
+  border-radius: 6px;
 }
 
 .all {
@@ -266,4 +323,90 @@ body {
 
 .event-to-city:hover, .event-to-list:hover {
   cursor: pointer;
+}
+
+/**/
+
+.event-card {
+  position: relative;
+  width: 588px;
+  height: 200px;
+  margin-bottom: 12px;
+  padding: 10px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: #666;
+  font-size: 12px;
+  text-align: left;
+}
+
+.event-card:hover {
+  border: 1px solid #ddd;
+}
+
+.event-img {
+  width: 120px;
+  height: 180px;
+  float: left;
+  margin-right: 21px;
+}
+
+.event-title {
+  height: 64px;
+  margin-top: 21px;
+  font-size: 14px;
+  line-height: 1.4rem;
+}
+
+.event-title a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.event-title::after {
+  margin-left: 4px;
+  padding: 0 2px;
+  content: '豆';
+  background-color: #2e963d;
+  color: #fff;
+  font-weight: lighter;
+}
+
+.event-card p {
+  width: 400px;
+  margin-top: 0.75em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.add-to-map {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: -4px;
+}
+
+.event-card:hover .add-to-map {
+  display: block;
+}
+
+.add-to-map:hover {
+  cursor: pointer;
+}
+
+.add-to-map span {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  color: #fff;
+  font-size: 18px;
+}
+
+.event-not-found-msg {
+  margin-top: 80px;
+  margin-bottom: 40px;
+  line-height: 1.8rem;
+  color: #666;
+  font-size: 14px;
 }
