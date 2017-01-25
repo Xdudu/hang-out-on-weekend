@@ -35,11 +35,13 @@ var cityItems = $('.city-item');
 
 // default selectedCity is beijing
 var selectedCity = 'beijing';
+var selectedCityCN = '北京';
 
 cityItems.each(function() {
   $(this).click(function() {
     $('#city-selected>span').text($(this).text());
     selectedCity = $(this).attr('id');
+    selectedCityCN = $(this).text();
   });
 });
 
@@ -101,17 +103,28 @@ var ajaxEventCate = [];
 var ajaxCateGenerator = function(originalCate) {
   var ajaxCate = [];
   for (var i = 0; i < originalCate.length; i++) {
-    ajaxCate[i] = new Object();
-    ajaxCate[i].cateName = originalCate[i];
-    ajaxCate[i].noMoreEvents = false;
-    ajaxCate[i].dataAppended = false;
-  }
+    ajaxCate[i] = {
+      cateName: originalCate[i],
+      noMoreEvents: false,
+      dataAppended: false
+    };
+  };
   ajaxCate.requestNum = 0
   return ajaxCate;
 }
 
 // handle AJAX requests
 var launchDoubanAJAX = function() {
+
+  // display back-to-top icon
+  $(window).on('scroll', function() {
+    if ( $(this).scrollTop() > 260 ) {
+      $('.to-top').addClass('to-top--display');
+    } else {
+      $('.to-top').removeClass('to-top--display');
+    }
+  });
+
   // turn off eventListener for scrollAndLoad temporarily when a AJAX request
   // is just sent
   $(window).off('scroll', scrollAndLoad);
@@ -210,9 +223,18 @@ $('.event-to-list').click(function() {
   $('.calender-container').toggleClass('hide');
   $('.event-cate-container').toggleClass('tiles');
   $('.event-cate-filter').toggleClass('show-filter');
+  $('.events-container').toggleClass('flex');
   $('.all-events').empty();
+  $('.all-events').on('click', '.add-to-map', addEventToMap);
+
   ajaxEventCate = ajaxCateGenerator(eventCate);
   launchDoubanAJAX(ajaxEventCate.requestNum);
+
+  drawMap();
+
+  $('.events-container').on('click', '.to-top', function() {
+    $(window).scrollTop(0);
+  });
 });
 
 $('.event-cate-filter').click(function() {
@@ -229,6 +251,78 @@ var scrollAndLoad = function() {
 };
 
 
+var eventCount = 0;
+
+var addEventToMap = function() {
+
+  var eventElement = $(this).parents('.event-card');
+  if (!eventElement.prop('class').includes('added')) {
+    var addEventAddress = eventElement.children('.event-address').text();
+
+    AMap.service('AMap.Geocoder', function() {
+      geocoder = new AMap.Geocoder({
+        city: selectedCityCN
+      });
+    });
+    geocoder.getLocation(addEventAddress, function(status, result) {
+      console.log(result);
+      if (status === 'complete' && result.info === 'OK') {
+        eventCount++;
+        var div = document.createElement('div');
+        div.className = 'marker-count';
+        div.innerHTML = eventCount;
+        var marker = new AMap.Marker({
+          position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+          title: eventElement.children('.event-title').text(),
+          content: div,
+          map: map
+        });
+
+        $('.event-items-count span').text(eventCount);
+        $('.event-items table').append(
+          $('<tr/>')
+            .addClass("event-item")
+            .append(
+              $('<td/>')
+                .addClass("event-item-num")
+                .text(eventCount) )
+            .append(
+              $('<td/>')
+                .addClass("event-item-time")
+                .text(eventElement.children('.event-time').text().slice(3) ) )
+            .append(
+              $('<td/>')
+                .addClass("event-item-title")
+                .html( eventElement.children('.event-title').html() ) )
+        );
+      } else {
+
+      };
+    });
+  };
+  eventElement.addClass('added');
+};
+
+
 // window.addEventListener('scroll', function() {
 //   var contentHeightRemain = document.documentElement.scrollHeight;
 // }, false);
+
+
+// ------- map
+
+var map;
+var bounds;
+
+function initMap() {
+  map = new AMap.Map('map', {
+    resizeEnable: true,
+    zoom: 20,
+    center: [116.39,39.9],
+    mapStyle: 'light'
+  });
+};
+
+function drawMap() {
+  map.setCity(selectedCityCN);
+};
