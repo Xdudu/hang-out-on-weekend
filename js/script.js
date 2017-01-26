@@ -1,105 +1,103 @@
-// ----generate date data for .week-of-year div and .calender-container
+// ---- 1st page: fill data in .week-of-year and .calender-container
 
-var getThisWeek = function(date) {
-  var firstDayThisYear = new Date(Date.parse('Jan 1, ' + date.getFullYear()));
+var fillCalender = function(today) {
+
+  // fill year
+  var thisYear = today.getFullYear();
+  $('#this-year-num').text(thisYear);
+
+  // fill week
+  var thisDay = today.getDay();
+  var firstDayThisYear = new Date(Date.parse('Jan 1, ' + thisYear));
   var daysFromFirstDay = Math.floor((today - firstDayThisYear) / 86400000);
-  var weekNum = Math.floor((daysFromFirstDay + date.getDay() + 7*(firstDayThisYear.getDay()==0) - 1) / 7) + 1;
-  return weekNum;
-}
+  var thisWeek = Math.ceil((daysFromFirstDay + thisDay + 7 * (firstDayThisYear.getDay() === 0) - 1) / 7);
+  $('#this-week-num').text(thisWeek);
 
-var today = new Date();
-var thisYear = today.getFullYear();
-var thisWeek = getThisWeek(today);
-var thisDay = today.getDay();
-
-$('#this-year-num').text(thisYear);
-$('#this-week-num').text(thisWeek);
-
-$('.date-in-week').each(function(index) {
-  var weekNumTemp = new Date(today - 86400000 * (thisDay - index - 1 + 7*(thisDay === 0)));
-  if (index == 5 || index == 6) {
-    $(this).text((weekNumTemp.getMonth() + 1) + '.' + weekNumTemp.getDate());
-  }
-  else {
-    $(this).text(weekNumTemp.getDate());
-  }
-});
-
-
-// ----handle user's select of city
-
-var theCity = $('#city-selected');
-var cityList = $('#all-cities-container');
-var cityContainer = $('#city-selected-container');
-var cityItems = $('.city-item');
-
-// default selectedCity is beijing
-var selectedCity = 'beijing';
-var selectedCityCN = '北京';
-
-cityItems.each(function() {
-  $(this).click(function() {
-    $('#city-selected>span').text($(this).text());
-    selectedCity = $(this).attr('id');
-    selectedCityCN = $(this).text();
+  // fill date in week
+  $('.date-in-week').each(function(index) {
+    var weekNumTemp = new Date(today - 86400000 * (thisDay - index - 1 + 7*(thisDay === 0)));
+    if (index == 5 || index == 6) {
+      $(this).text((weekNumTemp.getMonth() + 1) + '.' + weekNumTemp.getDate());
+    }
+    else {
+      $(this).text(weekNumTemp.getDate());
+    }
   });
+
+};
+
+fillCalender(new Date());
+
+
+// ---- 1st page: handle user's select of city, default is beijing
+
+var selectedCity = 'beijing';
+var selectedCityCN = '北京';  // CN characters for amap
+
+var selectCity = function() {
+  $('#city-selected>span').text($(this).text());
+  selectedCity = $(this).attr('id');
+  selectedCityCN = $(this).text();
+};
+
+$('.city-item').each(function() {
+  $(this).on('click', selectCity);
 });
 
-$('.city-to-event').click(function() {
-  $('.city-select-container').toggleClass('hide');
-  $('.event-select-container').toggleClass('show');
-});
-
-/////////////////////
-
-$('.event-to-city').click(function() {
-  $('.city-select-container').toggleClass('hide');
-  $('.event-select-container').toggleClass('show');
+$('.city-to-event, .event-to-city').each(function() {
+  $(this).click(function() {
+    $('.city-select-container').toggleClass('city-select-container--shift');
+    $('.event-select-container').toggleClass('event-select-container--shift');
+  })
 });
 
 
-// ----handle user's select of event category
+// 2nd page: ----handle user's select of event category
 
 var eventCate = [];
 
+var selectEventCate = function() {
+
+  if (eventCate.indexOf($(this).attr('id')) === -1) {
+    if ($(this).attr('id') === 'all' && eventCate.length >= 1) {
+      eventCate.splice(0, eventCate.length);
+      $('.event-cate[addToCate="true"]').each(function() {
+        $(this).attr('addToCate', false);
+      });
+    } else {
+      if (eventCate.indexOf('all') !== -1) {
+        eventCate.splice(eventCate.indexOf('all'), 1);
+        $('#all').attr('addToCate', false);
+      };
+    };
+    eventCate.push($(this).attr('id'));
+    $(this).attr('addToCate', true);
+  } else {
+    $(this).attr('addToCate', false);
+    eventCate.splice(eventCate.indexOf($(this).attr('id')), 1);
+  };
+
+  $('.event-cate').each(function() {
+    if ($(this).attr('addToCate') === 'true') {
+      $(this).addClass('event-cate--selected');
+    }
+    else {
+      $(this).removeClass('event-cate--selected');
+    }
+  });
+}
+
 $('.event-cate').each(function() {
   $(this).attr('addToCate', false);
-  $(this).click(function() {
-    if (eventCate.indexOf($(this).attr('id')) == -1) {
-      if ($(this).attr('id') == 'all' && eventCate.length >= 1) {
-        eventCate.splice(0, eventCate.length);
-        $('.event-cate[addToCate="true"]').each(function() {
-          $(this).attr('addToCate', false);
-        });
-      } else {
-        if (eventCate.indexOf('all') !== -1) {
-          eventCate.splice(eventCate.indexOf('all'), 1);
-          $('#all').attr('addToCate', false);
-        }
-      };
-      eventCate.push($(this).attr('id'));
-      $(this).attr('addToCate', true);
-    } else {
-      $(this).attr('addToCate', false);
-      eventCate.splice(eventCate.indexOf($(this).attr('id')), 1);
-    };
-    $('.event-cate').each(function() {
-      if ($(this).attr('addToCate') == 'true') {
-        $(this).addClass('cate-selected');
-      }
-      else {
-        $(this).removeClass('cate-selected');
-      }
-    });
-    console.log(eventCate);
-  });
+  $(this).on('click', selectEventCate);
 });
 
 
+// ---- 3rd page: handle AJAX requests
+
+var ajaxEventCate = [];
 // `ajaxEventCate` is an array with the same length of `eventCate`. It is
 // generated by ajaxCateGenerator() for functionality in launchDoubanAJAX().
-var ajaxEventCate = [];
-
 var ajaxCateGenerator = function(originalCate) {
   var ajaxCate = [];
   for (var i = 0; i < originalCate.length; i++) {
@@ -113,17 +111,7 @@ var ajaxCateGenerator = function(originalCate) {
   return ajaxCate;
 }
 
-// handle AJAX requests
 var launchDoubanAJAX = function() {
-
-  // display back-to-top icon
-  $(window).on('scroll', function() {
-    if ( $(this).scrollTop() > 260 ) {
-      $('.to-top').addClass('to-top--display');
-    } else {
-      $('.to-top').removeClass('to-top--display');
-    }
-  });
 
   // turn off eventListener for scrollAndLoad temporarily when a AJAX request
   // is just sent
@@ -146,7 +134,7 @@ var launchDoubanAJAX = function() {
           dataType: 'jsonp'
         }).done(function(data) {
           var allEventsParentNode = $('.all-events');
-          console.log(data);
+          
           // append events to `allEventsParentNode`
           for (var i = 0; i < data.events.length; i++) {
             var singleEventData = data.events[i];
@@ -219,30 +207,6 @@ var launchDoubanAJAX = function() {
   };
 };
 
-$('.event-to-list').click(function() {
-  $('.calender-container').toggleClass('hide');
-  $('.event-cate-container').toggleClass('tiles');
-  $('.event-cate-filter').toggleClass('show-filter');
-  $('.events-container').toggleClass('flex');
-  $('.all-events').empty();
-  $('.all-events').on('click', '.add-to-map', addEventToMap);
-
-  ajaxEventCate = ajaxCateGenerator(eventCate);
-  launchDoubanAJAX(ajaxEventCate.requestNum);
-
-  drawMap();
-
-  $('.events-container').on('click', '.to-top', function() {
-    $(window).scrollTop(0);
-  });
-});
-
-$('.event-cate-filter').click(function() {
-  $('.all-events').empty();
-  ajaxEventCate = ajaxCateGenerator(eventCate);
-  launchDoubanAJAX(ajaxEventCate.requestNum);
-})
-
 var scrollAndLoad = function() {
   var contentHeightRemain = $(document).height() - $(this).scrollTop();
   if (contentHeightRemain <= $(this).innerHeight()*1.5) {
@@ -251,70 +215,12 @@ var scrollAndLoad = function() {
 };
 
 
-var eventCount = 0;
-
-var addEventToMap = function() {
-
-  var eventElement = $(this).parents('.event-card');
-  if (!eventElement.prop('class').includes('added')) {
-    var addEventAddress = eventElement.children('.event-address').text();
-
-    AMap.service('AMap.Geocoder', function() {
-      geocoder = new AMap.Geocoder({
-        city: selectedCityCN
-      });
-    });
-    geocoder.getLocation(addEventAddress, function(status, result) {
-      console.log(result);
-      if (status === 'complete' && result.info === 'OK') {
-        eventCount++;
-        var div = document.createElement('div');
-        div.className = 'marker-count';
-        div.innerHTML = eventCount;
-        var marker = new AMap.Marker({
-          position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
-          title: eventElement.children('.event-title').text(),
-          content: div,
-          map: map
-        });
-
-        $('.event-items-count span').text(eventCount);
-        $('.event-items table').append(
-          $('<tr/>')
-            .addClass("event-item")
-            .append(
-              $('<td/>')
-                .addClass("event-item-num")
-                .text(eventCount) )
-            .append(
-              $('<td/>')
-                .addClass("event-item-time")
-                .text(eventElement.children('.event-time').text().slice(3) ) )
-            .append(
-              $('<td/>')
-                .addClass("event-item-title")
-                .html( eventElement.children('.event-title').html() ) )
-        );
-      } else {
-
-      };
-    });
-  };
-  eventElement.addClass('added');
-};
-
-
-// window.addEventListener('scroll', function() {
-//   var contentHeightRemain = document.documentElement.scrollHeight;
-// }, false);
-
-
-// ------- map
+// ---- 3rd page: initialize map
 
 var map;
-var bounds;
+var geocoder;
 
-function initMap() {
+var initMap = function() {
   map = new AMap.Map('map', {
     resizeEnable: true,
     zoom: 20,
@@ -323,6 +229,106 @@ function initMap() {
   });
 };
 
-function drawMap() {
-  map.setCity(selectedCityCN);
+
+// ---- 3rd page: handle user's select(click) of events, add markers on map and
+// descriptions aside
+
+var eventCount = 0;
+// `eventCount` to keep track of the number of events user selected
+var addEventToMap = function() {
+
+  var eventElement = $(this).parents('.event-card');
+
+  if ( !eventElement.prop('class').includes('added') ) {
+
+    var addEventAddress = eventElement.children('.event-address').text();
+    geocoder.getLocation(addEventAddress, function(status, result) {
+
+      if (status === 'complete' && result.info === 'OK') {
+        eventCount++;
+
+        // add a marker representing the address of the event to map
+        var markerContentDiv = document.createElement('div');
+        markerContentDiv.className = 'marker-count';
+        markerContentDiv.innerHTML = eventCount;
+        var marker = new AMap.Marker({
+          position: [result.geocodes[0].location.lng, result.geocodes[0].location.lat],
+          title: eventElement.children('.event-title').text(),
+          content: markerContentDiv,
+          map: map
+        });
+
+      } else {
+        alert('未匹配活动地址，请自行搜索哦~');
+      };
+
+      // add description of the event taside
+      $('.event-items-count span').text(eventCount);
+      $('.event-items table').append(
+        $('<tr/>')
+          .addClass("event-item")
+          .append(
+            $('<td/>')
+              .addClass("event-item-num")
+              .text(eventCount) )
+          .append(
+            $('<td/>')
+              .addClass("event-item-time")
+              .text(eventElement.children('.event-time').text().slice(3) ) )
+          .append(
+            $('<td/>')
+              .addClass("event-item-title")
+              .html( eventElement.children('.event-title').html() ) )
+      );
+    });
+  };
+
+  eventElement.addClass('added');
 };
+
+
+// ---- 3rd page: get ready for user's interact
+
+$('.event-to-list').click(function() {
+
+  $('.calender-container').addClass('calender-container--hide');
+  $('.event-cate-container').addClass('event-cate-container--small');
+  $('.events-container').addClass('events-container--flex');
+
+  $('.all-events').empty();
+
+  // ---- ABOUT AJAX
+  ajaxEventCate = ajaxCateGenerator(eventCate);
+  launchDoubanAJAX(ajaxEventCate.requestNum);
+
+  $('.event-cate-filter').click(function() {
+    $('.all-events').empty();
+    ajaxEventCate = ajaxCateGenerator(eventCate);
+    launchDoubanAJAX(ajaxEventCate.requestNum);
+  })
+
+  // ABOUT map
+  map.setCity(selectedCityCN);
+
+  AMap.service('AMap.Geocoder', function() {
+    geocoder = new AMap.Geocoder({
+      city: selectedCityCN
+    });
+  });
+
+  $('.all-events').on('click', '.add-to-map', addEventToMap);
+
+  // ABOUT back-to-top icon
+  $(window).on('scroll', function() {
+    if ( $(this).scrollTop() > 260 ) {
+      $('.to-top').addClass('to-top--display');
+    } else {
+      $('.to-top').removeClass('to-top--display');
+    }
+  });
+
+  $('.events-container').on('click', '.to-top', function() {
+    $(window).scrollTop(0);
+  });
+
+});

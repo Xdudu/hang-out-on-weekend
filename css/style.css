@@ -8,12 +8,16 @@ body {
   color: #584e3f;
 }
 
+
+/*******************/
 .main-container {
   width: 960px;
   margin: 4em auto;
   text-align: center;
 }
 
+
+/*******************/
 .week-of-year {
   height: 134px;
   position: relative;
@@ -39,7 +43,7 @@ body {
   height: 130px;
 }
 
-.calender-container[class*="hide"] {
+.calender-container--hide {
   display: none;
 }
 
@@ -92,15 +96,7 @@ body {
   z-index: -1;
 }
 
-
-/*#sat-num, #sun-num {
-  color: #fdd4df;
-}*/
-
-
-
 .event-cate-container {
-  /*display: none;*/
   height: 200px;
   position: relative;
   margin-bottom: 12px;
@@ -118,7 +114,7 @@ body {
   align-items: center;
 }
 
-.city-select-container[class*="hide"] {
+.city-select-container--shift {
   display: none;
 }
 
@@ -182,12 +178,13 @@ body {
   cursor: pointer;
 }
 
-/**/
+
+/*******************/
 .event-select-container {
   display: none;
 }
 
-.event-select-container[class*="show"] {
+.event-select-container--shift {
   display: block;
 }
 
@@ -207,17 +204,17 @@ body {
   cursor: pointer;
 }
 
-.event-cate-container[class*="tiles"] {
+.event-cate-container--small {
   height: 66px;
   border-radius: 0;
 }
 
-.event-cate-container[class*="tiles"] svg {
+.event-cate-container--small svg {
   display: none;
 }
 
-.event-cate-container[class*="tiles"] .event-cate,
-.event-cate-container[class*="tiles"] .event-cate-filter {
+.event-cate-container--small .event-cate,
+.event-cate-container--small .event-cate-filter {
   position: relative;
   display: inline-block;
   top: 20px;
@@ -244,7 +241,7 @@ body {
   cursor: pointer;
 }
 
-.event-cate-container[class*="tiles"] .all-cate{
+.event-cate-container--small .all-cate {
   width: 42px;
   height: 24px;
   line-height: 24px;
@@ -316,7 +313,7 @@ body {
   top: 140px;
 }
 
-.cate-selected {
+.event-cate--selected {
   background-color: #a08560;
   color: #fff;
 }
@@ -325,12 +322,13 @@ body {
   cursor: pointer;
 }
 
-/**/
+
+/*******************/
 .events-container {
   display: none;
 }
 
-.events-container[class*="flex"] {
+.events-container--flex {
   display: flex;
 }
 
@@ -431,6 +429,8 @@ body {
     top: 10px;
 }
 
+
+/*******************/
 #map {
   width: 100%;
   height: 200px;
@@ -445,20 +445,6 @@ body {
   color: #fff;
   font-size: 12px;
 }
-
-/*.event-count-info {
-  margin: 15px 0 10px 0;
-  color: #666;
-  text-align: right;
-}*/
-
-/*.event-item {
-  height: 50px;
-  color: #a08560;
-  font-size: 0.75em;
-  text-align: left;
-  border: 1px solid gray;
-}*/
 
 .events-in-map {
   height: 580px;
@@ -542,6 +528,8 @@ body {
   text-decoration: none;
 }
 
+
+/*******************/
 .to-top {
   display: none;
   position: fixed;
